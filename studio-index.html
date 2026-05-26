@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pozmogov.dev — студия продуктовой разработки</title>
+<meta name="description" content="Разрабатываем веб, мобильные и AI-продукты. От MVP за 4–8 недель до полноценной платформы.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --paper: #f4f2ec;
+    --paper-2: #eeebe2;
+    --card: #faf9f5;
+    --ink: #14140f;
+    --ink-soft: #55534a;
+    --muted: #908d80;
+    --line: #14140f;
+    --hair: #d8d4c8;
+    --accent: #e63329;
+    --accent-ink: #ffffff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Archivo', sans-serif; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+.mono { font-family: 'Space Mono', monospace; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+a { color: inherit; text-decoration: none; }
+
+header.nav { position: sticky; top: 0; z-index: 50; background: var(--paper); border-bottom: 1px solid var(--line); }
+header.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+.logo { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.03em; display: flex; align-items: center; gap: 2px; }
+.logo .dot { color: var(--accent); }
+.nav-links { display: flex; gap: 36px; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--ink); transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+.nav-cta { background: var(--ink); color: var(--paper); font-weight: 600; font-size: 14px; padding: 11px 22px; transition: background 0.2s; }
+.nav-cta:hover { background: var(--accent); }
+
+.hero { border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-top: 80px; padding-bottom: 0; }
+.hero-top { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; padding-bottom: 60px; }
+.hero h1 { font-family: 'Archivo', sans-serif; font-weight: 900; font-size: clamp(52px, 9vw, 130px); line-height: 0.88; letter-spacing: -0.05em; text-transform: uppercase; }
+.hero h1 .accent { color: var(--accent); }
+.hero-right { padding-bottom: 8px; }
+.hero-right p { font-size: 18px; color: var(--ink-soft); margin-bottom: 28px; max-width: 420px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn { border: none; cursor: pointer; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 600; padding: 15px 28px; display: inline-flex; align-items: center; gap: 9px; transition: background 0.2s, color 0.2s; border: 1px solid var(--line); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--ink); border-color: var(--ink); }
+.btn-ghost { background: transparent; color: var(--ink); }
+.btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+.hero-ticker { border-top: 1px solid var(--line); display: flex; }
+.hero-ticker .tk { flex: 1; padding: 18px 0; text-align: center; border-right: 1px solid var(--hair); font-family: 'Space Mono', monospace; font-size: 13px; color: var(--ink-soft); }
+.hero-ticker .tk:last-child { border-right: none; }
+.hero-ticker .tk b { color: var(--ink); }
+
+.metrics { border-bottom: 1px solid var(--line); }
+.metrics .wrap { display: grid; grid-template-columns: repeat(4, 1fr); padding: 0; }
+.metric { padding: 48px 32px; border-right: 1px solid var(--hair); }
+.metric:last-child { border-right: none; }
+.metric .mn { font-family: 'Archivo', sans-serif; font-size: 56px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.metric .mn .u { color: var(--accent); }
+.metric .ml { font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 12px; }
+
+section.block { border-bottom: 1px solid var(--line); }
+section.block .wrap { padding-top: 30px; padding-bottom: 90px; }
+.sec-marker { display: flex; align-items: baseline; gap: 16px; padding: 22px 0 50px; border-bottom: 1px solid var(--hair); margin-bottom: 56px; }
+.sec-marker .sm-num { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent); }
+.sec-marker h2 { font-family: 'Archivo', sans-serif; font-size: clamp(30px, 4.5vw, 56px); font-weight: 800; letter-spacing: -0.04em; line-height: 0.95; text-transform: uppercase; }
+.sec-marker .sm-desc { margin-left: auto; max-width: 300px; font-size: 15px; color: var(--ink-soft); text-align: right; align-self: center; }
+
+.services { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--hair); border-top: 1px solid var(--hair); }
+.svc { padding: 36px 30px; border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); transition: background 0.2s; }
+.svc:hover { background: var(--card); }
+.svc .svc-i { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 40px; }
+.svc h3 { font-family: 'Archivo', sans-serif; font-size: 23px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+.svc p { font-size: 14.5px; color: var(--ink-soft); }
+
+.process-list { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.pstep { padding: 32px 24px 0 0; border-top: 3px solid var(--ink); margin-right: 1px; }
+.pstep .pnum { font-family: 'Archivo', sans-serif; font-size: 40px; font-weight: 800; letter-spacing: -0.04em; margin-bottom: 18px; }
+.pstep h4 { font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+.pstep p { font-size: 14px; color: var(--ink-soft); padding-right: 16px; }
+
+.why-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
+.why { display: grid; grid-template-columns: 60px 1fr; gap: 20px; padding: 30px 0; border-bottom: 1px solid var(--hair); }
+.why:nth-child(odd) { padding-right: 50px; border-right: 1px solid var(--hair); }
+.why:nth-child(even) { padding-left: 40px; }
+.why .wn { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent); padding-top: 6px; }
+.why h4 { font-family: 'Archivo', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+.why p { font-size: 14.5px; color: var(--ink-soft); }
+
+.compare { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); }
+.comp-col { padding: 40px; }
+.comp-col.bad { border-right: 1px solid var(--line); background: var(--paper-2); }
+.comp-col.good { background: var(--ink); color: var(--paper); }
+.comp-col .cc-h { font-family: 'Space Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 28px; }
+.comp-col.bad .cc-h { color: var(--muted); }
+.comp-col.good .cc-h { color: var(--accent); }
+.comp-col ul { list-style: none; }
+.comp-col li { display: flex; gap: 14px; padding: 16px 0; font-size: 16px; border-bottom: 1px solid var(--hair); }
+.comp-col.good li { border-bottom: 1px solid #2c2c24; color: var(--paper); }
+.comp-col li:last-child { border-bottom: none; }
+.comp-col li .ic { flex-shrink: 0; font-family: 'Space Mono', monospace; color: var(--accent); }
+
+.pricing { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); }
+.price-card { padding: 38px 32px; border-right: 1px solid var(--line); }
+.price-card:last-child { border-right: none; }
+.price-card.featured { background: var(--ink); color: var(--paper); }
+.price-card .pc-tag { font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 16px; }
+.price-card .pc-name { font-family: 'Archivo', sans-serif; font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; text-transform: uppercase; }
+.price-card .pc-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 28px; min-height: 36px; }
+.price-card.featured .pc-desc { color: #b8b5a8; }
+.price-card .pc-price { font-family: 'Archivo', sans-serif; font-size: 38px; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+.price-card .pc-price .from { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); font-weight: 400; display: block; margin-bottom: 6px; }
+.price-card .pc-period { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin: 12px 0 28px; }
+.price-card ul { list-style: none; margin-bottom: 32px; }
+.price-card li { display: flex; gap: 10px; padding: 9px 0; font-size: 14px; color: var(--ink-soft); border-bottom: 1px solid var(--hair); }
+.price-card.featured li { color: #d8d4c8; border-bottom: 1px solid #2c2c24; }
+.price-card li .ck { color: var(--accent); flex-shrink: 0; font-family: 'Space Mono', monospace; }
+.price-card .pc-btn { width: 100%; border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 14px; font-family: 'Archivo', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s, color 0.2s; }
+.price-card .pc-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.price-card.featured .pc-btn { border-color: var(--paper); color: var(--paper); }
+.price-card.featured .pc-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+.stack { display: flex; flex-wrap: wrap; gap: 0; border-left: 1px solid var(--hair); border-top: 1px solid var(--hair); }
+.tech { padding: 18px 26px; font-family: 'Space Mono', monospace; font-size: 14px; color: var(--ink); border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); transition: background 0.2s, color 0.2s; }
+.tech:hover { background: var(--ink); color: var(--paper); }
+
+.faq-list { border-top: 1px solid var(--line); }
+.faq-item { border-bottom: 1px solid var(--hair); }
+.faq-q { width: 100%; background: none; border: none; text-align: left; padding: 26px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; cursor: pointer; color: var(--ink); font-family: 'Archivo', sans-serif; font-size: 19px; font-weight: 600; letter-spacing: -0.01em; }
+.faq-q .pm { color: var(--accent); font-size: 24px; transition: transform 0.3s; flex-shrink: 0; font-family: 'Space Mono', monospace; }
+.faq-item.open .pm { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.faq-item.open .faq-a { max-height: 240px; }
+.faq-a-in { padding: 0 0 26px; font-size: 15.5px; color: var(--ink-soft); max-width: 680px; }
+
+.cta { background: var(--ink); color: var(--paper); border-bottom: 1px solid var(--line); }
+.cta .wrap { padding: 100px 32px; }
+.cta-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: end; }
+.cta h2 { font-family: 'Archivo', sans-serif; font-size: clamp(40px, 6.5vw, 92px); font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; text-transform: uppercase; }
+.cta h2 .accent { color: var(--accent); }
+.cta-right p { font-size: 17px; color: #b8b5a8; margin-bottom: 28px; }
+.cta-note { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin-top: 18px; }
+
+footer .wrap { padding: 40px 32px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+footer .fcopy { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); }
+footer .flinks { display: flex; gap: 28px; }
+footer .flinks a { font-size: 14px; font-weight: 500; transition: color 0.2s; }
+footer .flinks a:hover { color: var(--accent); }
+
+@media (max-width: 900px) {
+    .hero-top { grid-template-columns: 1fr; gap: 28px; }
+    .hero-ticker { flex-wrap: wrap; }
+    .hero-ticker .tk { flex: 1 1 50%; border-bottom: 1px solid var(--hair); }
+    .metrics .wrap { grid-template-columns: 1fr 1fr; }
+    .metric { border-bottom: 1px solid var(--hair); }
+    .services, .process-list, .why-grid, .pricing { grid-template-columns: 1fr; }
+    .why:nth-child(odd) { padding-right: 0; border-right: none; }
+    .why:nth-child(even) { padding-left: 0; }
+    .compare { grid-template-columns: 1fr; }
+    .comp-col.bad { border-right: none; border-bottom: 1px solid var(--line); }
+    .price-card { border-right: none; border-bottom: 1px solid var(--line); }
+    .price-card:last-child { border-bottom: none; }
+    .nav-links { display: none; }
+    .sec-marker { flex-wrap: wrap; }
+    .sec-marker .sm-desc { margin-left: 0; text-align: left; }
+    .cta-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+    <div class="wrap">
+        <div class="logo">Pozmogov<span class="dot">.dev</span></div>
+        <nav class="nav-links">
+            <a href="#services">Услуги</a>
+            <a href="#process">Процесс</a>
+            <a href="#pricing">Цены</a>
+            <a href="#faq">FAQ</a>
+        </nav>
+        <a class="nav-cta" id="nav-cta">Обсудить проект</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="wrap">
+        <div class="hero-top">
+            <h1>Запустим<br>ваш <span class="accent">MVP</span><br>за 4–8<br>недель</h1>
+            <div class="hero-right">
+                <p>Студия продуктовой разработки. Веб, мобильные и AI-продукты — от первого MVP до полноценной платформы. Senior-команда, фиксированные сроки, прозрачный процесс.</p>
+                <div class="hero-cta">
+                    <a class="btn btn-primary" id="hero-cta">Обсудить проект →</a>
+                    <a class="btn btn-ghost" href="#process">Как мы работаем</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="hero-ticker">
+        <div class="tk"><b>Веб</b> · приложения</div>
+        <div class="tk"><b>Мобайл</b> · iOS / Android</div>
+        <div class="tk"><b>AI</b> · агенты и продукты</div>
+        <div class="tk"><b>Автоматизация</b> · процессов</div>
+    </div>
+</section>
+
+<div class="metrics">
+    <div class="wrap">
+        <div class="metric"><div class="mn">4–8<span class="u">.</span></div><div class="ml">недель до запуска</div></div>
+        <div class="metric"><div class="mn">24<span class="u">ч</span></div><div class="ml">ответ на заявку</div></div>
+        <div class="metric"><div class="mn">100<span class="u">%</span></div><div class="ml">покрытие тестами</div></div>
+        <div class="metric"><div class="mn">Sr<span class="u">.</span></div><div class="ml">senior-команда</div></div>
+    </div>
+</div>
+
+<section class="block" id="services">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">01 / Услуги</span>
+            <h2>Что мы<br>разрабатываем</h2>
+            <span class="sm-desc">От первого MVP до полноценной платформы — берём проект целиком.</span>
+        </div>
+        <div class="services">
+            <div class="svc"><div class="svc-i">[ WEB ]</div><h3>Веб-приложения</h3><p>SaaS-платформы, дашборды, личные кабинеты и конверсионные сайты на Next.js и React. Быстрые и готовые к нагрузке.</p></div>
+            <div class="svc"><div class="svc-i">[ MOBILE ]</div><h3>Мобильные приложения</h3><p>iOS и Android с нативным UX и общим кодом. Предсказуемые релизы и публикация в App Store и Google Play.</p></div>
+            <div class="svc"><div class="svc-i">[ MVP ]</div><h3>MVP-разработка</h3><p>От идеи до запущенного MVP за 4–8 недель. Сфокусированный скоуп и архитектура, которую не придётся переписывать.</p></div>
+            <div class="svc"><div class="svc-i">[ AI ]</div><h3>AI-агенты и продукты</h3><p>Кастомные AI-агенты и copilot-решения на базе GPT, Claude и ваших данных. От прототипа до production.</p></div>
+            <div class="svc"><div class="svc-i">[ AUTO ]</div><h3>Автоматизация</h3><p>Внутренние инструменты, админки, API-интеграции и пайплайны данных, которые убирают ручной труд.</p></div>
+            <div class="svc"><div class="svc-i">[ DESIGN ]</div><h3>Продуктовый дизайн</h3><p>UX-исследования, прототипы в Figma и дизайн-системы, которые превращают идеи в удобные интерфейсы.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="block" id="process">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">02 / Процесс</span>
+            <h2>От идеи<br>до запуска</h2>
+            <span class="sm-desc">Предсказуемый и прозрачный процесс на каждом этапе.</span>
+        </div>
+        <div class="process-list">
+            <div class="pstep"><div class="pnum">01</div><h4>Discovery и скоуп</h4><p>Погружаемся в бизнес и пользователей, согласуем скоуп, сроки и фиксированный бюджет до старта.</p></div>
+            <div class="pstep"><div class="pnum">02</div><h4>Дизайн и архитектура</h4><p>Проектируем UX и архитектуру, подбираем стек, разбиваем работу на еженедельные этапы.</p></div>
+            <div class="pstep"><div class="pnum">03</div><h4>Разработка и QA</h4><p>Пишем код на современном стеке с автотестами и CI/CD. Еженедельные демо прогресса.</p></div>
+            <div class="pstep"><div class="pnum">04</div><h4>Запуск и поддержка</h4><p>Выкатываем в продакшен, настраиваем мониторинг и развиваем продукт вместе с вами.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="block">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">03 / Почему мы</span>
+            <h2>Фокус на<br>результате</h2>
+            <span class="sm-desc">Думаем о бизнесе и метриках, а не о строчках кода.</span>
+        </div>
+        <div class="why-grid">
+            <div class="why"><div class="wn">01</div><div><h4>Быстрый выход на рынок</h4><p>Сфокусированный скоуп и опытная команда — продукт за недели, пока конкуренты пишут ТЗ.</p></div></div>
+            <div class="why"><div class="wn">02</div><div><h4>Предсказуемый бюджет</h4><p>Прозрачные оценки и еженедельные отчёты. Без скрытых переделок и неожиданных счетов.</p></div></div>
+            <div class="why"><div class="wn">03</div><div><h4>Production-ready качество</h4><p>Чистая архитектура, код-ревью и автотесты — код выдерживает реальную нагрузку.</p></div></div>
+            <div class="why"><div class="wn">04</div><div><h4>Готовность к росту</h4><p>MVP проектируем так, чтобы он вырос в полноценный продукт без переписывания.</p></div></div>
+            <div class="why"><div class="wn">05</div><div><h4>Современный стек и AI</h4><p>Next.js, React Native, Python и AI-инструменты там, где они реально дают результат.</p></div></div>
+            <div class="why"><div class="wn">06</div><div><h4>Партнёр, а не подрядчик</h4><p>Думаем о вашем бизнесе и метриках, а не просто закрываем задачи из таск-трекера.</p></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="block">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">04 / Сравнение</span>
+            <h2>Аутсорс<br>vs мы</h2>
+            <span class="sm-desc">Почему фиксированный скоуп и senior-команда меняют результат.</span>
+        </div>
+        <div class="compare">
+            <div class="comp-col bad">
+                <div class="cc-h">Обычный аутсорс</div>
+                <ul>
+                    <li><span class="ic">✕</span> 3–6+ месяцев на MVP</li>
+                    <li><span class="ic">✕</span> Непрозрачные оценки и частые доплаты</li>
+                    <li><span class="ic">✕</span> Торопливый код, который переписывают</li>
+                    <li><span class="ic">✕</span> Минимум тестов, только ручное QA</li>
+                    <li><span class="ic">✕</span> Технический долг с первого дня</li>
+                </ul>
+            </div>
+            <div class="comp-col good">
+                <div class="cc-h">Работа с Pozmogov.dev</div>
+                <ul>
+                    <li><span class="ic">→</span> 4–8 недель на MVP</li>
+                    <li><span class="ic">→</span> Фиксированный скоуп и еженедельные отчёты</li>
+                    <li><span class="ic">→</span> Production-ready с первого дня</li>
+                    <li><span class="ic">→</span> Автотесты и CI/CD по умолчанию</li>
+                    <li><span class="ic">→</span> Архитектура, готовая к росту</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="block" id="pricing">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">05 / Цены</span>
+            <h2>Прозрачные<br>пакеты</h2>
+            <span class="sm-desc">Фиксированные оценки и сроки. Без скрытых доплат.</span>
+        </div>
+        <div class="pricing">
+            <div class="price-card">
+                <div class="pc-tag">Старт</div>
+                <div class="pc-name">Лендинг / сайт</div>
+                <div class="pc-desc">Быстрые конверсионные задачи</div>
+                <div class="pc-price"><span class="from">от</span> 60 000 ₽</div>
+                <div class="pc-period">срок — от 1 недели</div>
+                <ul>
+                    <li><span class="ck">+</span> Дизайн под ключ</li>
+                    <li><span class="ck">+</span> Адаптив и SEO-база</li>
+                    <li><span class="ck">+</span> Форма заявки + Telegram</li>
+                    <li><span class="ck">+</span> Деплой и домен</li>
+                </ul>
+                <button class="pc-btn" data-plan="Лендинг / сайт (от 60 000 ₽)">Обсудить →</button>
+            </div>
+            <div class="price-card featured">
+                <div class="pc-tag">— Хит</div>
+                <div class="pc-name">MVP-спринт</div>
+                <div class="pc-desc">Запуск продукта за 4–8 недель</div>
+                <div class="pc-price"><span class="from">от</span> 350 000 ₽</div>
+                <div class="pc-period">срок — 4–8 недель</div>
+                <ul>
+                    <li><span class="ck">+</span> Скоуп и роадмап MVP</li>
+                    <li><span class="ck">+</span> Дизайн ключевых экранов</li>
+                    <li><span class="ck">+</span> Веб или мобайл + бэкенд</li>
+                    <li><span class="ck">+</span> Интеграции (оплата / AI / CRM)</li>
+                    <li><span class="ck">+</span> Поддержка после запуска</li>
+                </ul>
+                <button class="pc-btn" data-plan="MVP-спринт (от 350 000 ₽)">Запустить MVP →</button>
+            </div>
+            <div class="price-card">
+                <div class="pc-tag">Масштаб</div>
+                <div class="pc-name">Полный продукт</div>
+                <div class="pc-desc">Платформа, готовая к росту</div>
+                <div class="pc-price"><span class="from">от</span> 800 000 ₽</div>
+                <div class="pc-period">срок — от 2 месяцев</div>
+                <ul>
+                    <li><span class="ck">+</span> Архитектура и база данных</li>
+                    <li><span class="ck">+</span> Дизайн-система</li>
+                    <li><span class="ck">+</span> Безопасность и нагрузка</li>
+                    <li><span class="ck">+</span> Аналитика и мониторинг</li>
+                    <li><span class="ck">+</span> Развитие и поддержка</li>
+                </ul>
+                <button class="pc-btn" data-plan="Полный продукт (от 800 000 ₽)">Обсудить →</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="block">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">06 / Стек</span>
+            <h2>Технологии</h2>
+            <span class="sm-desc">Современный стек для долгоживущих продуктов.</span>
+        </div>
+        <div class="stack">
+            <span class="tech">Next.js</span><span class="tech">React</span><span class="tech">TypeScript</span><span class="tech">React Native</span><span class="tech">Node.js</span><span class="tech">Python</span><span class="tech">PostgreSQL</span><span class="tech">Supabase</span><span class="tech">AWS</span><span class="tech">Docker</span><span class="tech">Tailwind</span><span class="tech">OpenAI / Claude</span>
+        </div>
+    </div>
+</section>
+
+<section class="block" id="faq">
+    <div class="wrap">
+        <div class="sec-marker">
+            <span class="sm-num">07 / FAQ</span>
+            <h2>Частые<br>вопросы</h2>
+        </div>
+        <div class="faq-list">
+            <div class="faq-item"><button class="faq-q">За сколько вы можете собрать MVP? <span class="pm">+</span></button><div class="faq-a"><div class="faq-a-in">Обычно 4–8 недель — если зафиксировать скоуп на старте и сфокусироваться на ключевом пользовательском сценарии. Каждую неделю показываем демо.</div></div></div>
+            <div class="faq-item"><button class="faq-q">Как формируется цена? <span class="pm">+</span></button><div class="faq-a"><div class="faq-a-in">Фиксированная оценка под скоуп проекта. До старта вы получаете понятную смету, сроки и список того, что входит. Без почасовых сюрпризов.</div></div></div>
+            <div class="faq-item"><button class="faq-q">Кому будет принадлежать код? <span class="pm">+</span></button><div class="faq-a"><div class="faq-a-in">Вам — 100%. По завершении передаём репозиторий, инфраструктуру и документацию. Никакого vendor-lock.</div></div></div>
+            <div class="faq-item"><button class="faq-q">Работаете с нетехническими основателями? <span class="pm">+</span></button><div class="faq-a"><div class="faq-a-in">Да. Помогаем превратить идею в требования, пользовательские сценарии и архитектуру. Знать код не нужно — нужна ясность по задаче.</div></div></div>
+            <div class="faq-item"><button class="faq-q">Поддерживаете продукт после запуска? <span class="pm">+</span></button><div class="faq-a"><div class="faq-a-in">Да. После запуска — окно на правки и поддержку, дальше можем вести продукт в режиме ежемесячного развития.</div></div></div>
+        </div>
+    </div>
+</section>
+
+<section class="cta">
+    <div class="wrap">
+        <div class="cta-grid">
+            <h2>Превратим идею<br>в <span class="accent">продукт</span></h2>
+            <div class="cta-right">
+                <p>Расскажите о проекте — вернёмся с понятным скоупом, сроками и бюджетом в течение 24 часов.</p>
+                <a class="btn btn-primary" id="cta-final">Обсудить в Telegram →</a>
+                <div class="cta-note">// без обязательств</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        <div class="logo">Pozmogov<span class="dot">.dev</span></div>
+        <div class="flinks">
+            <a href="#services">Услуги</a>
+            <a href="#pricing">Цены</a>
+            <a href="#faq">FAQ</a>
+            <a id="foot-tg">Telegram</a>
+        </div>
+        <div class="fcopy">© 2026 POZMOGOV.DEV</div>
+    </div>
+</footer>
+
+<script>
+const TG = 'Webfusiondigital';
+function tgLink(text){ return 'https://t.me/' + TG + '?text=' + encodeURIComponent(text); }
+const general = 'Здравствуйте! Хочу обсудить разработку продукта.';
+['nav-cta','hero-cta','cta-final','foot-tg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el){ el.href = tgLink(general); el.target = '_blank'; }
+});
+document.querySelectorAll('.pc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        window.open(tgLink('Здравствуйте! Интересует пакет: ' + btn.getAttribute('data-plan') + '. Хочу обсудить проект.'), '_blank');
+    });
+});
+document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+        const item = q.parentElement;
+        const open = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!open) item.classList.add('open');
+    });
+});
+</script>
+</body>
+</html>
