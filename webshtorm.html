@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-en="web-storm — ship your MVP, starting day one" data-ru="web-storm — запустим ваш MVP, со старта">web-storm — запустим ваш MVP</title>
+<meta name="description" data-en="Product partner. We design and build web, mobile and AI MVPs. Work starts on day one — first working prototype in days." data-ru="Продуктовый партнёр. Веб, мобильные и AI-MVP. Работа стартует в первый день — первый рабочий прототип за дни.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070f;
+    --bg-2:#070b18;
+    --surface:#0c1426;
+    --surface-2:#0f1930;
+    --line:rgba(132,160,220,.12);
+    --line-strong:rgba(132,160,220,.22);
+    --text:#e9eefb;
+    --muted:#93a1c2;
+    --muted-2:#69769a;
+    --blue:#2f6bff;
+    --blue-2:#4f86ff;
+    --blue-soft:#7aa7ff;
+    --cyan:#56d3ff;
+    --glow:rgba(47,107,255,.55);
+    --radius:18px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Manrope',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.55;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(900px 500px at 78% -8%, rgba(47,107,255,.22), transparent 60%),
+      radial-gradient(700px 480px at 8% 12%, rgba(86,211,255,.10), transparent 55%),
+      radial-gradient(1000px 700px at 50% 110%, rgba(47,107,255,.14), transparent 60%);
+  }
+  /* subtle grid texture */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:
+      linear-gradient(rgba(132,160,220,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(132,160,220,.045) 1px, transparent 1px);
+    background-size:54px 54px;
+    mask-image:radial-gradient(ellipse 90% 80% at 50% 0%, #000 30%, transparent 80%);
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:1}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{font-family:'Sora',sans-serif;line-height:1.08;letter-spacing:-.02em;font-weight:700}
+  .mono{font-family:'JetBrains Mono',monospace}
+  .hl{
+    background:linear-gradient(120deg,var(--blue-soft),var(--cyan));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+
+  /* ====== HEADER ====== */
+  header{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(5,7,15,.72);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .brand{display:flex;align-items:center;gap:11px;font-family:'Sora';font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+  .logo{
+    width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+    background:linear-gradient(150deg,#1b3a8f,#2f6bff 55%,#56d3ff);
+    box-shadow:0 6px 22px -6px var(--glow), inset 0 1px 0 rgba(255,255,255,.3);
+    font-family:'Sora';font-weight:800;font-size:.92rem;color:#fff;
+  }
+  .logo svg{width:20px;height:20px;fill:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+  .brand small{color:var(--muted-2);font-weight:500;font-family:'JetBrains Mono';font-size:.62rem;letter-spacing:.18em;display:block;margin-top:-2px}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-right{display:flex;align-items:center;gap:14px}
+  .lang{
+    display:flex;border:1px solid var(--line-strong);border-radius:999px;overflow:hidden;
+    font-family:'JetBrains Mono';font-size:.72rem;font-weight:500;
+  }
+  .lang button{
+    background:transparent;color:var(--muted-2);border:0;cursor:pointer;
+    padding:7px 13px;transition:.2s;font-family:inherit;letter-spacing:.05em;
+  }
+  .lang button.active{background:var(--blue);color:#fff}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;border:0;
+    font-family:'Inter',sans-serif;font-weight:600;font-size:.92rem;border-radius:11px;
+    padding:12px 22px;transition:transform .15s, box-shadow .25s, background .25s;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff;
+    box-shadow:0 10px 30px -10px var(--glow);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px var(--glow)}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--line-strong)}
+  .btn-ghost:hover{border-color:var(--blue-2);background:rgba(47,107,255,.08)}
+  .menu-toggle{display:none;background:none;border:1px solid var(--line-strong);color:var(--text);border-radius:10px;padding:8px 11px;cursor:pointer;font-size:1.1rem}
+
+  /* ====== HERO ====== */
+  .hero{padding:84px 0 70px;position:relative}
+  .pill{
+    display:inline-flex;align-items:center;gap:9px;font-family:'JetBrains Mono';font-size:.72rem;
+    letter-spacing:.1em;color:var(--blue-soft);border:1px solid var(--line-strong);
+    background:rgba(47,107,255,.07);padding:7px 14px;border-radius:999px;margin-bottom:26px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.7rem);font-weight:800;max-width:14ch}
+  .hero p.lead{color:var(--muted);font-size:clamp(1.02rem,1.6vw,1.22rem);max-width:56ch;margin-top:24px;line-height:1.6}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:40px}
+  .tag{
+    font-family:'JetBrains Mono';font-size:.78rem;color:var(--muted);
+    border:1px solid var(--line);border-radius:10px;padding:9px 14px;background:var(--surface);
+  }
+  .tag b{color:var(--text);font-weight:700}
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:56px;
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--line);
+  }
+  .stat{background:var(--bg-2);padding:26px 22px}
+  .stat .num{font-family:'Sora';font-weight:800;font-size:2rem;color:var(--text)}
+  .stat .num .hl{font-size:inherit}
+  .stat .lbl{color:var(--muted-2);font-size:.85rem;margin-top:4px}
+
+  /* ====== HERO GRID + AUDIENCE + GAUGE ====== */
+  .hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:50px;align-items:center}
+  .audience{
+    display:inline-flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:22px;
+    font-family:'JetBrains Mono';font-size:.86rem;letter-spacing:.01em;color:var(--text);
+    border:1px solid var(--line-strong);background:rgba(47,107,255,.07);
+    border-radius:12px;padding:11px 16px;line-height:1.4;
+  }
+  .audience svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:2;flex:none}
+  .audience .sep{color:var(--muted-2)}
+  .audience b{color:var(--blue-soft);font-weight:700}
+
+  .gauge-wrap{display:flex;justify-content:center;position:relative}
+  .gauge-wrap::before{
+    content:"";position:absolute;inset:6% 10%;border-radius:50%;
+    background:radial-gradient(circle, rgba(47,107,255,.30), transparent 65%);
+    filter:blur(14px);z-index:0;
+  }
+  .gauge{position:relative;width:100%;max-width:430px;z-index:1}
+  .gauge svg{width:100%;height:auto;display:block;overflow:visible}
+  .tick-line{stroke:rgba(132,160,220,.5);stroke-width:2}
+  .tick-line.major{stroke:var(--blue-soft);stroke-width:2.4}
+  .tick-label{fill:var(--muted);font-family:'JetBrains Mono';font-size:16px;text-anchor:middle;dominant-baseline:middle}
+  .readout{position:absolute;left:0;right:0;bottom:9%;text-align:center;pointer-events:none}
+  .readout .value{font-family:'Sora';font-weight:800;font-size:clamp(2.2rem,6vw,3rem);line-height:1;letter-spacing:-.02em}
+  .readout .unit{font-family:'JetBrains Mono';font-size:.95rem;color:var(--blue-soft);margin-left:7px;font-weight:500}
+  .readout .cap{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono';font-size:.7rem;letter-spacing:.14em;color:var(--muted-2);text-transform:uppercase;margin-top:9px}
+  .readout .cap svg{width:13px;height:13px;stroke:var(--cyan);fill:none;stroke-width:2.4}
+
+  /* ====== SECTION HEADERS ====== */
+  section{padding:84px 0;position:relative}
+  .eyebrow{font-family:'JetBrains Mono';font-size:.74rem;letter-spacing:.2em;color:var(--blue-soft);text-transform:uppercase;margin-bottom:14px}
+  .sec-head{max-width:60ch}
+  .sec-head h2{font-size:clamp(1.9rem,4vw,3rem);font-weight:700}
+  .sec-head p{color:var(--muted);margin-top:16px;font-size:1.05rem;max-width:52ch}
+
+  /* ====== SERVICES ====== */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  .card{
+    background:linear-gradient(180deg,var(--surface),var(--bg-2));
+    border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;
+    transition:transform .25s, border-color .25s, box-shadow .25s;position:relative;overflow:hidden;
+  }
+  .card::before{
+    content:"";position:absolute;inset:0;opacity:0;transition:opacity .3s;
+    background:radial-gradient(420px 220px at 80% -20%, rgba(47,107,255,.16), transparent 70%);
+  }
+  .card:hover{transform:translateY(-5px);border-color:var(--line-strong);box-shadow:0 24px 50px -28px rgba(0,0,0,.8)}
+  .card:hover::before{opacity:1}
+  .card .kicker{font-family:'JetBrains Mono';font-size:.7rem;letter-spacing:.16em;color:var(--blue-soft);margin-bottom:18px}
+  .card h3{font-size:1.28rem;margin-bottom:12px}
+  .card p{color:var(--muted);font-size:.97rem}
+  .ico{
+    width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:20px;
+    background:rgba(47,107,255,.12);border:1px solid var(--line-strong);
+  }
+  .ico svg{width:23px;height:23px;stroke:var(--blue-soft);fill:none;stroke-width:1.7}
+
+  /* ====== PROCESS ====== */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;position:relative}
+  .step .n{font-family:'Sora';font-weight:800;font-size:2.4rem;color:transparent;-webkit-text-stroke:1.4px var(--blue-2);opacity:.55;line-height:1}
+  .step h4{font-size:1.12rem;margin:16px 0 10px}
+  .step p{color:var(--muted);font-size:.93rem}
+
+  /* ====== WHY (grid-3 reused) ====== */
+  .why .card h3{display:flex;align-items:flex-start;gap:12px}
+  .why .card .num{font-family:'JetBrains Mono';color:var(--blue-soft);font-size:.95rem;flex:none;padding-top:3px}
+
+  /* ====== COMPARISON ====== */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:48px}
+  .col{border-radius:var(--radius);padding:32px 30px;border:1px solid var(--line)}
+  .col.bad{background:var(--bg-2)}
+  .col.good{background:linear-gradient(180deg,rgba(47,107,255,.12),var(--surface));border-color:var(--line-strong);box-shadow:0 0 0 1px rgba(47,107,255,.18),0 24px 60px -34px var(--glow)}
+  .col h3{font-size:1.3rem;margin-bottom:22px}
+  .col ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+  .col li{display:flex;gap:13px;color:var(--muted);font-size:.98rem;align-items:flex-start}
+  .col li b{color:var(--text);font-weight:600}
+  .mark{flex:none;width:21px;height:21px;border-radius:6px;display:grid;place-items:center;font-size:.8rem;margin-top:1px;font-weight:700}
+  .mark.x{background:rgba(255,90,90,.13);color:#ff8585}
+  .mark.v{background:rgba(47,107,255,.18);color:var(--blue-soft)}
+
+  /* ====== PRICING ====== */
+  .prices{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;align-items:start}
+  .price{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:32px 28px;position:relative;transition:transform .25s,border-color .25s}
+  .price:hover{transform:translateY(-5px)}
+  .price.feat{border-color:var(--blue-2);background:linear-gradient(180deg,rgba(47,107,255,.14),var(--surface));box-shadow:0 26px 60px -34px var(--glow)}
+  .badge{position:absolute;top:-12px;right:24px;background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff;font-family:'JetBrains Mono';font-size:.68rem;letter-spacing:.12em;padding:6px 12px;border-radius:999px}
+  .price .tier{font-family:'JetBrains Mono';font-size:.74rem;letter-spacing:.16em;color:var(--blue-soft);text-transform:uppercase}
+  .price h3{font-size:1.45rem;margin:10px 0 6px}
+  .price .sub{color:var(--muted-2);font-size:.9rem;min-height:42px}
+  .price .amount{font-family:'Sora';font-weight:800;font-size:2rem;margin:14px 0 4px}
+  .price .term{color:var(--muted-2);font-size:.85rem;font-family:'JetBrains Mono'}
+  .price ul{list-style:none;margin:22px 0;display:flex;flex-direction:column;gap:12px}
+  .price li{display:flex;gap:11px;font-size:.94rem;color:var(--muted)}
+  .price li::before{content:"+";color:var(--blue-soft);font-family:'JetBrains Mono';font-weight:700;flex:none}
+  .price .btn{width:100%;justify-content:center}
+
+  /* ====== STACK ====== */
+  .chips{display:flex;flex-wrap:wrap;gap:12px;margin-top:44px}
+  .chip{font-family:'JetBrains Mono';font-size:.85rem;color:var(--muted);border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:11px 18px;transition:.2s}
+  .chip:hover{color:var(--text);border-color:var(--blue-2);background:rgba(47,107,255,.08)}
+
+  /* ====== FAQ ====== */
+  .faq{margin-top:44px;display:flex;flex-direction:column;gap:12px}
+  .q{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+  .q-head{width:100%;text-align:left;background:none;border:0;color:var(--text);cursor:pointer;
+    padding:22px 24px;font-family:'Sora';font-weight:600;font-size:1.05rem;display:flex;justify-content:space-between;gap:18px;align-items:center}
+  .q-head .plus{flex:none;width:26px;height:26px;border:1px solid var(--line-strong);border-radius:8px;display:grid;place-items:center;color:var(--blue-soft);transition:transform .3s;font-size:1.1rem}
+  .q.open .plus{transform:rotate(45deg)}
+  .q-body{max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--muted)}
+  .q-body p{padding:0 24px 22px;font-size:.98rem;max-width:70ch}
+
+  /* ====== FINAL CTA ====== */
+  .final{
+    border:1px solid var(--line-strong);border-radius:26px;padding:64px 48px;text-align:center;
+    background:
+      radial-gradient(600px 300px at 50% 0%, rgba(47,107,255,.22), transparent 70%),
+      linear-gradient(180deg,var(--surface-2),var(--bg-2));
+    position:relative;overflow:hidden;
+  }
+  .final h2{font-size:clamp(2rem,4.5vw,3.2rem);max-width:18ch;margin:0 auto}
+  .final p{color:var(--muted);margin:20px auto 34px;max-width:50ch;font-size:1.08rem}
+  .final .note{font-family:'JetBrains Mono';font-size:.78rem;color:var(--muted-2);margin-top:20px}
+
+  /* ====== FOOTER ====== */
+  footer{border-top:1px solid var(--line);padding:40px 0;margin-top:40px}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+  .foot-links{display:flex;gap:26px;color:var(--muted);font-size:.92rem}
+  .foot-links a:hover{color:var(--text)}
+  .copy{color:var(--muted-2);font-family:'JetBrains Mono';font-size:.76rem;letter-spacing:.05em}
+
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease, transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ====== MODAL ====== */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;
+    background:rgba(3,5,12,.78);backdrop-filter:blur(8px);padding:24px;
+  }
+  .modal-overlay.open{display:flex;animation:fadeIn .25s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  body.modal-lock{overflow:hidden}
+  .modal{
+    position:relative;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;
+    background:linear-gradient(180deg,var(--surface-2),var(--bg-2));
+    border:1px solid var(--line-strong);border-radius:22px;padding:38px 34px;
+    box-shadow:0 40px 90px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(47,107,255,.12);
+    animation:modalIn .3s cubic-bezier(.2,.9,.3,1);
+  }
+  @keyframes modalIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+  .modal-close{
+    position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:10px;cursor:pointer;
+    background:transparent;border:1px solid var(--line-strong);color:var(--muted);font-size:1rem;transition:.2s;
+  }
+  .modal-close:hover{color:var(--text);border-color:var(--blue-2);background:rgba(47,107,255,.08)}
+  .modal-eyebrow{font-family:'JetBrains Mono';font-size:.72rem;letter-spacing:.18em;color:var(--blue-soft);margin-bottom:10px}
+  .modal h3{font-size:1.6rem;margin-bottom:8px}
+  .modal-sub{color:var(--muted);font-size:.96rem;margin-bottom:24px}
+  .field{margin-bottom:15px}
+  .field label{display:block;font-size:.8rem;color:var(--muted-2);margin-bottom:7px;font-family:'JetBrains Mono';letter-spacing:.03em}
+  .field input,.field textarea{
+    width:100%;background:var(--bg);border:1px solid var(--line-strong);border-radius:11px;
+    color:var(--text);font-family:'Manrope',sans-serif;font-size:.96rem;padding:12px 14px;transition:border-color .2s, box-shadow .2s;resize:vertical;
+  }
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--blue-2);box-shadow:0 0 0 3px rgba(47,107,255,.18)}
+  .field input.err,.field textarea.err{border-color:#ff6b6b;box-shadow:0 0 0 3px rgba(255,107,107,.15)}
+  .modal-submit{width:100%;justify-content:center;margin-top:6px}
+  .modal-or{display:flex;align-items:center;gap:14px;color:var(--muted-2);font-family:'JetBrains Mono';font-size:.74rem;margin:18px 0;text-transform:uppercase;letter-spacing:.1em}
+  .modal-or::before,.modal-or::after{content:"";flex:1;height:1px;background:var(--line)}
+  .modal-tg{width:100%;justify-content:center}
+  .modal-note{color:var(--muted-2);font-size:.76rem;margin-top:18px;line-height:1.5;text-align:center}
+  .modal-success{text-align:center;padding:14px 0}
+  .modal-success .success-ico{
+    width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:6px auto 20px;
+    background:rgba(47,107,255,.14);border:1px solid var(--line-strong);color:var(--cyan);font-size:1.8rem;
+    box-shadow:0 0 30px -6px var(--glow);
+  }
+  .modal-success h3{font-size:1.5rem;margin-bottom:10px}
+  .modal-success p{color:var(--muted);margin-bottom:26px}
+  .modal-success .btn{width:100%;justify-content:center}
+
+  /* ====== RESPONSIVE ====== */
+  @media(max-width:980px){
+    .grid-3,.steps,.prices{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .hero-grid{grid-template-columns:1fr;gap:24px}
+    .gauge-wrap{order:-1}
+    .gauge{max-width:340px}
+  }
+  @media(max-width:760px){
+    .nav-links{display:none}
+    .menu-toggle{display:block}
+    .nav-links.show{display:flex;position:absolute;top:72px;left:0;right:0;flex-direction:column;background:rgba(7,11,24,.97);
+      padding:18px 24px;gap:16px;border-bottom:1px solid var(--line);z-index:60}
+    .grid-3,.steps,.prices,.compare{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr 1fr}
+    .hero{padding:54px 0 50px}
+    section{padding:60px 0}
+    .final{padding:48px 24px}
+    .foot{flex-direction:column;text-align:center}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+      <span>web-storm<small data-en="PRODUCT PARTNER" data-ru="ПРОДУКТОВЫЙ ПАРТНЁР">ПРОДУКТОВЫЙ ПАРТНЁР</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#services" data-en="Services" data-ru="Услуги">Услуги</a>
+      <a href="#process" data-en="Process" data-ru="Процесс">Процесс</a>
+      <a href="#pricing" data-en="Pricing" data-ru="Цены">Цены</a>
+      <a href="#faq" data-en="FAQ" data-ru="FAQ">FAQ</a>
+    </nav>
+    <div class="nav-right">
+      <div class="lang">
+        <button data-lang="ru" class="active">RU</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="#contact" class="btn btn-primary" data-en="Start a project" data-ru="Обсудить проект">Обсудить проект</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<div id="top"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="pill reveal"><span class="dot"></span><span data-en="Work starts on day one" data-ru="Старт работ — в первый день">Старт работ — в первый день</span></span>
+        <h1 class="reveal" data-en='We ship your <span class="hl">MVP</span> — fast, from <span class="hl">day one</span>' data-ru='Запустим ваш <span class="hl">MVP</span> — быстро, с <span class="hl">первого дня</span>'>Запустим ваш <span class="hl">MVP</span> — быстро, с <span class="hl">первого дня</span></h1>
+        <p class="audience reveal" data-en='<svg viewBox="0 0 24 24"><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="7" r="3.2"/><path d="M16 11a3 3 0 1 0 0-6M21 21v-2a4 4 0 0 0-3-3.8"/></svg><span>For <b>businesses</b> and <b>entrepreneurs</b><span class="sep">·</span>from websites to <b>CRM&nbsp;systems</b></span>' data-ru='<svg viewBox="0 0 24 24"><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="7" r="3.2"/><path d="M16 11a3 3 0 1 0 0-6M21 21v-2a4 4 0 0 0-3-3.8"/></svg><span><b>Бизнесу</b>, <b>предпринимателям</b><span class="sep">·</span>от сайтов до <b>CRM-систем</b></span>'><svg viewBox="0 0 24 24"><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="9" cy="7" r="3.2"/><path d="M16 11a3 3 0 1 0 0-6M21 21v-2a4 4 0 0 0-3-3.8"/></svg><span><b>Бизнесу</b>, <b>предпринимателям</b><span class="sep">·</span>от сайтов до <b>CRM-систем</b></span></p>
+        <p class="lead reveal" data-en="Product partner for web, mobile and AI. No long discovery rituals — we lock the scope and start building on day one, with a working prototype in days and a launch-ready MVP in weeks." data-ru="Продуктовый партнёр: веб, мобильные и AI-продукты. Никаких долгих прелюдий — фиксируем скоуп и начинаем разработку в первый день. Рабочий прототип за дни, готовый к запуску MVP — за недели.">Продуктовый партнёр: веб, мобильные и AI-продукты. Никаких долгих прелюдий — фиксируем скоуп и начинаем разработку в первый день. Рабочий прототип за дни, готовый к запуску MVP — за недели.</p>
+        <div class="hero-cta reveal">
+          <a href="#contact" class="btn btn-primary" data-en="Start a project →" data-ru="Обсудить проект →">Обсудить проект →</a>
+          <a href="#process" class="btn btn-ghost" data-en="How we work" data-ru="Как мы работаем">Как мы работаем</a>
+        </div>
+        <div class="hero-tags reveal">
+          <span class="tag"><b>Web</b> · <span data-en="apps" data-ru="приложения">приложения</span></span>
+          <span class="tag"><b>Mobile</b> · iOS / Android</span>
+          <span class="tag"><b>AI</b> · <span data-en="agents & products" data-ru="агенты и продукты">агенты и продукты</span></span>
+          <span class="tag"><b><span data-en="Automation" data-ru="Автоматизация">Автоматизация</span></b></span>
+        </div>
+      </div>
+
+      <div class="gauge-wrap reveal">
+        <div class="gauge">
+          <svg id="speedo" viewBox="0 0 400 360" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="arcGrad" x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" stop-color="#2f6bff"/>
+                <stop offset="0.55" stop-color="#4f86ff"/>
+                <stop offset="1" stop-color="#56d3ff"/>
+              </linearGradient>
+              <filter id="blueGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="6" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <path id="arcTrack" fill="none" stroke="rgba(132,160,220,.14)" stroke-width="16" stroke-linecap="round"/>
+            <path id="arcFill" fill="none" stroke="url(#arcGrad)" stroke-width="16" stroke-linecap="round" filter="url(#blueGlow)"/>
+            <g id="ticks"></g>
+            <g id="needle">
+              <polygon points="200,70 193,205 207,205" fill="url(#arcGrad)" filter="url(#blueGlow)"/>
+            </g>
+            <circle cx="200" cy="205" r="17" fill="#0c1426" stroke="#4f86ff" stroke-width="3"/>
+            <circle cx="200" cy="205" r="6" fill="#56d3ff"/>
+          </svg>
+          <div class="readout">
+            <div class="value"><span id="speedVal">0</span><span class="unit">mph</span></div>
+            <div class="cap"><svg viewBox="0 0 24 24"><path d="M6 18L18 6M18 6h-7M18 6v7"/></svg><span data-en="production speed" data-ru="скорость производства">скорость производства</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat"><div class="num"><span class="hl">1</span></div><div class="lbl" data-en="day to first build" data-ru="день до первой сборки">день до первой сборки</div></div>
+      <div class="stat"><div class="num">24<span style="font-size:1.1rem">ч</span></div><div class="lbl" data-en="reply to your request" data-ru="ответ на заявку">ответ на заявку</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl" data-en="test coverage" data-ru="покрытие тестами">покрытие тестами</div></div>
+      <div class="stat"><div class="num">Sr.</div><div class="lbl" data-en="senior team" data-ru="senior-команда">senior-команда</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">01 / <span data-en="Services" data-ru="Услуги">Услуги</span></div>
+      <h2 data-en="What we build" data-ru="Что мы разрабатываем">Что мы разрабатываем</h2>
+      <p data-en="From the first MVP to a full platform — we take the project end to end." data-ru="От первого MVP до полноценной платформы — берём проект целиком.">От первого MVP до полноценной платформы — берём проект целиком.</p>
+    </div>
+    <div class="grid-3 why">
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="kicker">[ WEB ]</div>
+        <h3 data-en="Web applications" data-ru="Веб-приложения">Веб-приложения</h3>
+        <p data-en="SaaS platforms, dashboards, customer portals and high-converting sites on Next.js and React — fast and ready for load." data-ru="SaaS-платформы, дашборды, личные кабинеты и конверсионные сайты на Next.js и React. Быстрые и готовые к нагрузке.">SaaS-платформы, дашборды, личные кабинеты и конверсионные сайты на Next.js и React. Быстрые и готовые к нагрузке.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
+        <div class="kicker">[ MOBILE ]</div>
+        <h3 data-en="Mobile apps" data-ru="Мобильные приложения">Мобильные приложения</h3>
+        <p data-en="iOS and Android with native UX and shared code. Predictable releases and publishing to the App Store and Google Play." data-ru="iOS и Android с нативным UX и общим кодом. Предсказуемые релизы и публикация в App Store и Google Play.">iOS и Android с нативным UX и общим кодом. Предсказуемые релизы и публикация в App Store и Google Play.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+        <div class="kicker">[ MVP ]</div>
+        <h3 data-en="MVP development" data-ru="MVP-разработка">MVP-разработка</h3>
+        <p data-en="From idea to a launched MVP — building from day one. Focused scope and architecture you won't have to rewrite." data-ru="От идеи до запущенного MVP — со стартом разработки в первый день. Сфокусированный скоуп и архитектура, которую не придётся переписывать.">От идеи до запущенного MVP — со стартом разработки в первый день. Сфокусированный скоуп и архитектура, которую не придётся переписывать.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12a3 3 0 1 1 6 0 3 3 0 0 1-6 0M12 3v3M12 18v3"/></svg></div>
+        <div class="kicker">[ AI ]</div>
+        <h3 data-en="AI agents & products" data-ru="AI-агенты и продукты">AI-агенты и продукты</h3>
+        <p data-en="Custom AI agents and copilots on top of GPT, Claude and your own data. From prototype to production." data-ru="Кастомные AI-агенты и copilot-решения на базе GPT, Claude и ваших данных. От прототипа до production.">Кастомные AI-агенты и copilot-решения на базе GPT, Claude и ваших данных. От прототипа до production.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="2.4"/></svg></div>
+        <div class="kicker">[ AUTO ]</div>
+        <h3 data-en="Automation" data-ru="Автоматизация">Автоматизация</h3>
+        <p data-en="Internal tools, admin panels, API integrations and data pipelines that remove manual work." data-ru="Внутренние инструменты, админки, API-интеграции и пайплайны данных, которые убирают ручной труд.">Внутренние инструменты, админки, API-интеграции и пайплайны данных, которые убирают ручной труд.</p>
+      </div>
+      <div class="card reveal">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><circle cx="9" cy="11" r="1.3"/></svg></div>
+        <div class="kicker">[ DESIGN ]</div>
+        <h3 data-en="Product design" data-ru="Продуктовый дизайн">Продуктовый дизайн</h3>
+        <p data-en="UX research, Figma prototypes and design systems that turn ideas into usable interfaces." data-ru="UX-исследования, прототипы в Figma и дизайн-системы, которые превращают идеи в удобные интерфейсы.">UX-исследования, прототипы в Figma и дизайн-системы, которые превращают идеи в удобные интерфейсы.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">02 / <span data-en="Process" data-ru="Процесс">Процесс</span></div>
+      <h2 data-en="From idea to launch" data-ru="От идеи до запуска">От идеи до запуска</h2>
+      <p data-en="A predictable, transparent process at every stage — and code starts on day one." data-ru="Предсказуемый и прозрачный процесс на каждом этапе — а код стартует в первый день.">Предсказуемый и прозрачный процесс на каждом этапе — а код стартует в первый день.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">01</div><h4 data-en="Discovery & scope" data-ru="Discovery и скоуп">Discovery и скоуп</h4><p data-en="We dive into the business and users, lock the scope, timeline and fixed budget before the start." data-ru="Погружаемся в бизнес и пользователей, согласуем скоуп, сроки и фиксированный бюджет до старта.">Погружаемся в бизнес и пользователей, согласуем скоуп, сроки и фиксированный бюджет до старта.</p></div>
+      <div class="step reveal"><div class="n">02</div><h4 data-en="Design & architecture" data-ru="Дизайн и архитектура">Дизайн и архитектура</h4><p data-en="We design the UX and architecture, pick the stack and split work into weekly milestones." data-ru="Проектируем UX и архитектуру, подбираем стек, разбиваем работу на еженедельные этапы.">Проектируем UX и архитектуру, подбираем стек, разбиваем работу на еженедельные этапы.</p></div>
+      <div class="step reveal"><div class="n">03</div><h4 data-en="Build & QA" data-ru="Разработка и QA">Разработка и QA</h4><p data-en="We write code on a modern stack with automated tests and CI/CD. Weekly demos of progress." data-ru="Пишем код на современном стеке с автотестами и CI/CD. Еженедельные демо прогресса.">Пишем код на современном стеке с автотестами и CI/CD. Еженедельные демо прогресса.</p></div>
+      <div class="step reveal"><div class="n">04</div><h4 data-en="Launch & support" data-ru="Запуск и поддержка">Запуск и поддержка</h4><p data-en="We ship to production, set up monitoring and grow the product together with you." data-ru="Выкатываем в продакшен, настраиваем мониторинг и развиваем продукт вместе с вами.">Выкатываем в продакшен, настраиваем мониторинг и развиваем продукт вместе с вами.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">03 / <span data-en="Why us" data-ru="Почему мы">Почему мы</span></div>
+      <h2 data-en="Focused on the result" data-ru="Фокус на результате">Фокус на результате</h2>
+      <p data-en="We think about your business and metrics, not lines of code." data-ru="Думаем о бизнесе и метриках, а не о строчках кода.">Думаем о бизнесе и метриках, а не о строчках кода.</p>
+    </div>
+    <div class="grid-3 why">
+      <div class="card reveal"><h3><span class="num">01</span><span data-en="Fast time to market" data-ru="Быстрый выход на рынок">Быстрый выход на рынок</span></h3><p data-en="Focused scope and an experienced team — a product in weeks while competitors are still writing specs." data-ru="Сфокусированный скоуп и опытная команда — продукт за недели, пока конкуренты пишут ТЗ.">Сфокусированный скоуп и опытная команда — продукт за недели, пока конкуренты пишут ТЗ.</p></div>
+      <div class="card reveal"><h3><span class="num">02</span><span data-en="Predictable budget" data-ru="Предсказуемый бюджет">Предсказуемый бюджет</span></h3><p data-en="Transparent estimates and weekly reports. No hidden rework, no surprise invoices." data-ru="Прозрачные оценки и еженедельные отчёты. Без скрытых переделок и неожиданных счетов.">Прозрачные оценки и еженедельные отчёты. Без скрытых переделок и неожиданных счетов.</p></div>
+      <div class="card reveal"><h3><span class="num">03</span><span data-en="Production-ready quality" data-ru="Production-ready качество">Production-ready качество</span></h3><p data-en="Clean architecture, code review and automated tests — code that survives real load." data-ru="Чистая архитектура, код-ревью и автотесты — код выдерживает реальную нагрузку.">Чистая архитектура, код-ревью и автотесты — код выдерживает реальную нагрузку.</p></div>
+      <div class="card reveal"><h3><span class="num">04</span><span data-en="Ready to scale" data-ru="Готовность к росту">Готовность к росту</span></h3><p data-en="We design the MVP so it grows into a full product without rewriting." data-ru="MVP проектируем так, чтобы он вырос в полноценный продукт без переписывания.">MVP проектируем так, чтобы он вырос в полноценный продукт без переписывания.</p></div>
+      <div class="card reveal"><h3><span class="num">05</span><span data-en="Modern stack & AI" data-ru="Современный стек и AI">Современный стек и AI</span></h3><p data-en="Next.js, React Native, Python and AI tools where they actually deliver results." data-ru="Next.js, React Native, Python и AI-инструменты там, где они реально дают результат.">Next.js, React Native, Python и AI-инструменты там, где они реально дают результат.</p></div>
+      <div class="card reveal"><h3><span class="num">06</span><span data-en="A partner, not a vendor" data-ru="Партнёр, а не подрядчик">Партнёр, а не подрядчик</span></h3><p data-en="We care about your business and metrics, not just closing tickets in a tracker." data-ru="Думаем о вашем бизнесе и метриках, а не просто закрываем задачи из таск-трекера.">Думаем о вашем бизнесе и метриках, а не просто закрываем задачи из таск-трекера.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section id="compare">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">04 / <span data-en="Comparison" data-ru="Сравнение">Сравнение</span></div>
+      <h2 data-en="Typical outsource vs us" data-ru="Обычный аутсорс vs мы">Обычный аутсорс vs мы</h2>
+      <p data-en="Why a fixed scope and a senior team change the outcome." data-ru="Почему фиксированный скоуп и senior-команда меняют результат.">Почему фиксированный скоуп и senior-команда меняют результат.</p>
+    </div>
+    <div class="compare">
+      <div class="col bad reveal">
+        <h3 data-en="Typical outsource" data-ru="Обычный аутсорс">Обычный аутсорс</h3>
+        <ul>
+          <li><span class="mark x">✕</span><span data-en="Weeks of paperwork before any code" data-ru="Недели бумаг до первой строчки кода">Недели бумаг до первой строчки кода</span></li>
+          <li><span class="mark x">✕</span><span data-en="Opaque estimates and frequent surcharges" data-ru="Непрозрачные оценки и частые доплаты">Непрозрачные оценки и частые доплаты</span></li>
+          <li><span class="mark x">✕</span><span data-en="Rushed code that gets rewritten" data-ru="Торопливый код, который переписывают">Торопливый код, который переписывают</span></li>
+          <li><span class="mark x">✕</span><span data-en="Minimal tests, manual QA only" data-ru="Минимум тестов, только ручное QA">Минимум тестов, только ручное QA</span></li>
+          <li><span class="mark x">✕</span><span data-en="Technical debt from day one" data-ru="Технический долг с первого дня">Технический долг с первого дня</span></li>
+        </ul>
+      </div>
+      <div class="col good reveal">
+        <h3 data-en="Working with web-storm" data-ru="Работа с web-storm">Работа с web-storm</h3>
+        <ul>
+          <li><span class="mark v">→</span><span data-en="Code starts on day one" data-ru="Код стартует в первый день">Код стартует в первый день</span></li>
+          <li><span class="mark v">→</span><span data-en="Fixed scope and weekly reports" data-ru="Фиксированный скоуп и еженедельные отчёты">Фиксированный скоуп и еженедельные отчёты</span></li>
+          <li><span class="mark v">→</span><span data-en="Production-ready from day one" data-ru="Production-ready с первого дня">Production-ready с первого дня</span></li>
+          <li><span class="mark v">→</span><span data-en="Automated tests and CI/CD by default" data-ru="Автотесты и CI/CD по умолчанию">Автотесты и CI/CD по умолчанию</span></li>
+          <li><span class="mark v">→</span><span data-en="Architecture ready to grow" data-ru="Архитектура, готовая к росту">Архитектура, готовая к росту</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">05 / <span data-en="Pricing" data-ru="Цены">Цены</span></div>
+      <h2 data-en="Transparent packages" data-ru="Прозрачные пакеты">Прозрачные пакеты</h2>
+      <p data-en="Fixed estimates and timelines. No hidden surcharges." data-ru="Фиксированные оценки и сроки. Без скрытых доплат.">Фиксированные оценки и сроки. Без скрытых доплат.</p>
+    </div>
+    <div class="prices">
+      <div class="price reveal">
+        <div class="tier" data-en="Start" data-ru="Старт">Старт</div>
+        <h3 data-en="Landing / site" data-ru="Лендинг / сайт">Лендинг / сайт</h3>
+        <div class="sub" data-en="Fast conversion-focused tasks" data-ru="Быстрые конверсионные задачи">Быстрые конверсионные задачи</div>
+        <div class="amount" data-en="from $100" data-ru="от $100">от $100</div>
+        <div class="term" data-en="launch & tests — 1–3 days" data-ru="запуск и тесты — 1–3 дня">запуск и тесты — 1–3 дня</div>
+        <ul>
+          <li data-en="Turnkey design" data-ru="Дизайн под ключ">Дизайн под ключ</li>
+          <li data-en="Responsive + SEO base" data-ru="Адаптив и SEO-база">Адаптив и SEO-база</li>
+          <li data-en="Lead form + Telegram" data-ru="Форма заявки + Telegram">Форма заявки + Telegram</li>
+          <li data-en="Deploy and domain" data-ru="Деплой и домен">Деплой и домен</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost" data-en="Discuss →" data-ru="Обсудить →">Обсудить →</a>
+      </div>
+      <div class="price feat reveal">
+        <span class="badge" data-en="POPULAR" data-ru="ХИТ">ХИТ</span>
+        <div class="tier" data-en="MVP sprint" data-ru="MVP-спринт">MVP-спринт</div>
+        <h3 data-en="Launch a product" data-ru="Запуск продукта">Запуск продукта</h3>
+        <div class="sub" data-en="From kickoff to launch — fast" data-ru="От старта до запуска — быстро">От старта до запуска — быстро</div>
+        <div class="amount" data-en="from $500" data-ru="от $500">от $500</div>
+        <div class="term" data-en="launch — 7 days" data-ru="запуск — 7 дней">запуск — 7 дней</div>
+        <ul>
+          <li data-en="MVP scope & roadmap" data-ru="Скоуп и роадмап MVP">Скоуп и роадмап MVP</li>
+          <li data-en="Design of key screens" data-ru="Дизайн ключевых экранов">Дизайн ключевых экранов</li>
+          <li data-en="Web or mobile + backend" data-ru="Веб или мобайл + бэкенд">Веб или мобайл + бэкенд</li>
+          <li data-en="Integrations (payments / AI / CRM)" data-ru="Интеграции (оплата / AI / CRM)">Интеграции (оплата / AI / CRM)</li>
+          <li data-en="Post-launch support" data-ru="Поддержка после запуска">Поддержка после запуска</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" data-en="Launch MVP →" data-ru="Запустить MVP →">Запустить MVP →</a>
+      </div>
+      <div class="price reveal">
+        <div class="tier" data-en="Scale" data-ru="Масштаб">Масштаб</div>
+        <h3 data-en="Full product" data-ru="Полный продукт">Полный продукт</h3>
+        <div class="sub" data-en="A platform ready to grow" data-ru="Платформа, готовая к росту">Платформа, готовая к росту</div>
+        <div class="amount" data-en="from $1,000" data-ru="от $1000">от $1000</div>
+        <div class="term" data-en="launch — 10–14 days" data-ru="запуск — 10–14 дней">запуск — 10–14 дней</div>
+        <ul>
+          <li data-en="Architecture & database" data-ru="Архитектура и база данных">Архитектура и база данных</li>
+          <li data-en="Design system" data-ru="Дизайн-система">Дизайн-система</li>
+          <li data-en="Security & load" data-ru="Безопасность и нагрузка">Безопасность и нагрузка</li>
+          <li data-en="Analytics & monitoring" data-ru="Аналитика и мониторинг">Аналитика и мониторинг</li>
+          <li data-en="Ongoing development" data-ru="Развитие и поддержка">Развитие и поддержка</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost" data-en="Discuss →" data-ru="Обсудить →">Обсудить →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">06 / <span data-en="Stack" data-ru="Стек">Стек</span></div>
+      <h2 data-en="Technologies" data-ru="Технологии">Технологии</h2>
+      <p data-en="A modern stack for long-living products." data-ru="Современный стек для долгоживущих продуктов.">Современный стек для долгоживущих продуктов.</p>
+    </div>
+    <div class="chips reveal">
+      <span class="chip">Next.js</span><span class="chip">React</span><span class="chip">TypeScript</span>
+      <span class="chip">React Native</span><span class="chip">Node.js</span><span class="chip">Python</span>
+      <span class="chip">PostgreSQL</span><span class="chip">Supabase</span><span class="chip">AWS</span>
+      <span class="chip">Docker</span><span class="chip">Tailwind</span><span class="chip">OpenAI / Claude</span>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">07 / FAQ</div>
+      <h2 data-en="Common questions" data-ru="Частые вопросы">Частые вопросы</h2>
+    </div>
+    <div class="faq">
+      <div class="q reveal">
+        <button class="q-head"><span data-en="How fast can you start, and how soon is the MVP?" data-ru="Как быстро вы стартуете и когда будет MVP?">Как быстро вы стартуете и когда будет MVP?</span><span class="plus">+</span></button>
+        <div class="q-body"><p data-en="We start building on day one once the scope is locked — a working prototype appears within days, and a launch-ready MVP usually within a few weeks. You see a demo every week." data-ru="Начинаем разработку в первый день после фиксации скоупа — рабочий прототип появляется за дни, а готовый к запуску MVP обычно за несколько недель. Каждую неделю показываем демо.">Начинаем разработку в первый день после фиксации скоупа — рабочий прототип появляется за дни, а готовый к запуску MVP обычно за несколько недель. Каждую неделю показываем демо.</p></div>
+      </div>
+      <div class="q reveal">
+        <button class="q-head"><span data-en="How is the price formed?" data-ru="Как формируется цена?">Как формируется цена?</span><span class="plus">+</span></button>
+        <div class="q-body"><p data-en="A fixed estimate for the project scope. Before the start you get a clear quote, timeline and a list of what's included. No hourly surprises." data-ru="Фиксированная оценка под скоуп проекта. До старта вы получаете понятную смету, сроки и список того, что входит. Без почасовых сюрпризов.">Фиксированная оценка под скоуп проекта. До старта вы получаете понятную смету, сроки и список того, что входит. Без почасовых сюрпризов.</p></div>
+      </div>
+      <div class="q reveal">
+        <button class="q-head"><span data-en="Who owns the code?" data-ru="Кому будет принадлежать код?">Кому будет принадлежать код?</span><span class="plus">+</span></button>
+        <div class="q-body"><p data-en="You do — 100%. On completion we hand over the repository, infrastructure and documentation. No vendor lock-in." data-ru="Вам — 100%. По завершении передаём репозиторий, инфраструктуру и документацию. Никакого vendor-lock.">Вам — 100%. По завершении передаём репозиторий, инфраструктуру и документацию. Никакого vendor-lock.</p></div>
+      </div>
+      <div class="q reveal">
+        <button class="q-head"><span data-en="Do you work with non-technical founders?" data-ru="Работаете с нетехническими основателями?">Работаете с нетехническими основателями?</span><span class="plus">+</span></button>
+        <div class="q-body"><p data-en="Yes. We help turn an idea into requirements, user scenarios and architecture. You don't need to know code — you need clarity on the task." data-ru="Да. Помогаем превратить идею в требования, пользовательские сценарии и архитектуру. Знать код не нужно — нужна ясность по задаче.">Да. Помогаем превратить идею в требования, пользовательские сценарии и архитектуру. Знать код не нужно — нужна ясность по задаче.</p></div>
+      </div>
+      <div class="q reveal">
+        <button class="q-head"><span data-en="Do you support the product after launch?" data-ru="Поддерживаете продукт после запуска?">Поддерживаете продукт после запуска?</span><span class="plus">+</span></button>
+        <div class="q-body"><p data-en="Yes. After launch there's a window for fixes and support, and we can keep running the product in a monthly development mode." data-ru="Да. После запуска — окно на правки и поддержку, дальше можем вести продукт в режиме ежемесячного развития.">Да. После запуска — окно на правки и поддержку, дальше можем вести продукт в режиме ежемесячного развития.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="contact">
+  <div class="wrap">
+    <div class="final reveal">
+      <h2 data-en="Turn an idea into a product" data-ru="Превратим идею в продукт">Превратим идею в продукт</h2>
+      <p data-en="Tell us about your project — we'll come back with a clear scope, timeline and budget within 24 hours." data-ru="Расскажите о проекте — вернёмся с понятным скоупом, сроками и бюджетом в течение 24 часов.">Расскажите о проекте — вернёмся с понятным скоупом, сроками и бюджетом в течение 24 часов.</p>
+      <a href="https://t.me/" target="_blank" rel="noopener" class="btn btn-primary" data-en="Message us on Telegram →" data-ru="Обсудить в Telegram →">Обсудить в Telegram →</a>
+      <div class="note">// <span data-en="no obligations" data-ru="без обязательств">без обязательств</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <a href="#top" class="brand"><span class="logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span><span>web-storm</span></a>
+    <div class="foot-links">
+      <a href="#services" data-en="Services" data-ru="Услуги">Услуги</a>
+      <a href="#pricing" data-en="Pricing" data-ru="Цены">Цены</a>
+      <a href="#faq" data-en="FAQ" data-ru="FAQ">FAQ</a>
+      <a href="https://t.me/" target="_blank" rel="noopener">Telegram</a>
+    </div>
+    <div class="copy">© 2026 WEB-STORM</div>
+  </div>
+</footer>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+
+    <div id="modalForm">
+      <div class="modal-eyebrow">// web-storm</div>
+      <h3 id="modalTitle" data-en="Start a project" data-ru="Обсудить проект">Обсудить проект</h3>
+      <p class="modal-sub" data-en="Leave a request — we'll reply within 24 hours. Or message us on Telegram right away." data-ru="Оставьте заявку — ответим в течение 24 часов. Или сразу напишите нам в Telegram.">Оставьте заявку — ответим в течение 24 часов. Или сразу напишите нам в Telegram.</p>
+
+      <div class="field">
+        <label data-en="Name" data-ru="Имя">Имя</label>
+        <input id="fName" type="text" autocomplete="name" placeholder="">
+      </div>
+      <div class="field">
+        <label data-en="Telegram / email / phone" data-ru="Telegram / email / телефон">Telegram / email / телефон</label>
+        <input id="fContact" type="text" placeholder="@username / mail@site.com">
+      </div>
+      <div class="field">
+        <label data-en="About the project (optional)" data-ru="О проекте (необязательно)">О проекте (необязательно)</label>
+        <textarea id="fMsg" rows="3" placeholder=""></textarea>
+      </div>
+
+      <button class="btn btn-primary modal-submit" id="modalSubmit" data-en="Send request" data-ru="Отправить заявку">Отправить заявку</button>
+
+      <div class="modal-or"><span data-en="or" data-ru="или">или</span></div>
+
+      <a href="https://t.me/" target="_blank" rel="noopener" class="btn btn-ghost modal-tg" data-en="Message on Telegram →" data-ru="Написать в Telegram →">Написать в Telegram →</a>
+
+      <div class="modal-note" data-en="By submitting you agree to be contacted about your request." data-ru="Отправляя заявку, вы соглашаетесь на обратную связь по ней.">Отправляя заявку, вы соглашаетесь на обратную связь по ней.</div>
+    </div>
+
+    <div class="modal-success" id="modalSuccess" hidden>
+      <div class="success-ico">✓</div>
+      <h3 data-en="Request sent!" data-ru="Заявка отправлена!">Заявка отправлена!</h3>
+      <p data-en="We'll get back to you within 24 hours." data-ru="Свяжемся с вами в течение 24 часов.">Свяжемся с вами в течение 24 часов.</p>
+      <button class="btn btn-ghost" id="modalDone" data-en="Close" data-ru="Закрыть">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ---------- LANGUAGE SWITCH ---------- */
+  let lang = 'ru';
+  function applyLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-'+l+']').forEach(el=>{
+      const val = el.getAttribute('data-'+l);
+      if(el.tagName === 'TITLE' || el.tagName === 'META'){
+        if(el.tagName==='TITLE') el.textContent = val;
+        else el.setAttribute('content', val);
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.querySelectorAll('.lang button').forEach(b=>{
+      b.classList.toggle('active', b.dataset.lang === l);
+    });
+  }
+  document.querySelectorAll('.lang button').forEach(b=>{
+    b.addEventListener('click',()=>applyLang(b.dataset.lang));
+  });
+
+  /* ---------- MOBILE MENU ---------- */
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click',()=>navLinks.classList.toggle('show'));
+  navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLinks.classList.remove('show')));
+
+  /* ---------- FAQ ACCORDION ---------- */
+  document.querySelectorAll('.q-head').forEach(head=>{
+    head.addEventListener('click',()=>{
+      const q = head.parentElement;
+      const body = q.querySelector('.q-body');
+      const open = q.classList.contains('open');
+      document.querySelectorAll('.q').forEach(o=>{o.classList.remove('open');o.querySelector('.q-body').style.maxHeight=null;});
+      if(!open){ q.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+    });
+  });
+
+  /* ---------- SCROLL REVEAL ---------- */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{
+    el.style.transitionDelay = (Math.min(i,6)*0.05)+'s';
+    io.observe(el);
+  });
+
+  /* ---------- SPEEDOMETER (HUD) ---------- */
+  (function(){
+    const cx=200, cy=205, R=150, A0=-120, A1=120, MAX=300, TARGET=300;
+    const rad=d=>d*Math.PI/180;
+    const P=(r,a)=>[cx+r*Math.sin(rad(a)), cy-r*Math.cos(rad(a))];
+    const angOf=v=>A0+(v/MAX)*(A1-A0);
+    function arc(r,from,to){
+      const [x0,y0]=P(r,from),[x1,y1]=P(r,to);
+      const large=Math.abs(to-from)>180?1:0, sweep=to>from?1:0;
+      return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${large} ${sweep} ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+    }
+    const track=document.getElementById('arcTrack');
+    const fill=document.getElementById('arcFill');
+    const ticks=document.getElementById('ticks');
+    const needle=document.getElementById('needle');
+    const valEl=document.getElementById('speedVal');
+    if(!track) return;
+
+    track.setAttribute('d', arc(R,A0,A1));
+    fill.setAttribute('d', arc(R,A0,A1));
+
+    // ticks + labels
+    const svgNS='http://www.w3.org/2000/svg';
+    for(let v=0; v<=MAX; v+=20){
+      const a=angOf(v), major=(v%60===0);
+      const [x1,y1]=P(R-12,a), [x2,y2]=P(R-(major?30:22),a);
+      const l=document.createElementNS(svgNS,'line');
+      l.setAttribute('x1',x1.toFixed(1)); l.setAttribute('y1',y1.toFixed(1));
+      l.setAttribute('x2',x2.toFixed(1)); l.setAttribute('y2',y2.toFixed(1));
+      l.setAttribute('class','tick-line'+(major?' major':''));
+      ticks.appendChild(l);
+      if(major){
+        const [lx,ly]=P(R-50,a);
+        const t=document.createElementNS(svgNS,'text');
+        t.setAttribute('x',lx.toFixed(1)); t.setAttribute('y',ly.toFixed(1));
+        t.setAttribute('class','tick-label'); t.textContent=v;
+        ticks.appendChild(t);
+      }
+    }
+
+    const len=fill.getTotalLength();
+    fill.style.strokeDasharray=len;
+    fill.style.strokeDashoffset=len;
+    needle.setAttribute('transform',`rotate(${A0} ${cx} ${cy})`);
+
+    const ease=t=>1-Math.pow(1-t,3);
+    function run(){
+      const dur=1900; let start=null;
+      function frame(ts){
+        if(!start) start=ts;
+        const p=Math.min((ts-start)/dur,1), e=ease(p);
+        const v=TARGET*e;
+        needle.setAttribute('transform',`rotate(${angOf(v).toFixed(2)} ${cx} ${cy})`);
+        fill.style.strokeDashoffset=len*(1-(v/MAX));
+        valEl.textContent=Math.round(v);
+        if(p<1) requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // launch the sweep when the gauge scrolls into view (once)
+    const gio=new IntersectionObserver((ents)=>{
+      ents.forEach(en=>{ if(en.isIntersecting){ run(); gio.disconnect(); } });
+    },{threshold:.4});
+    gio.observe(document.getElementById('speedo'));
+  })();
+
+  /* ---------- CONTACT MODAL ---------- */
+  const modal = document.getElementById('modal');
+  const modalForm = document.getElementById('modalForm');
+  const modalSuccess = document.getElementById('modalSuccess');
+
+  function openModal(e){
+    if(e) e.preventDefault();
+    modalForm.hidden = false;
+    modalSuccess.hidden = true;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden','false');
+    document.body.classList.add('modal-lock');
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    document.body.classList.remove('modal-lock');
+  }
+
+  // every button on the page opens the modal — except the buttons inside the modal itself
+  document.querySelectorAll('.btn').forEach(b=>{
+    if(b.closest('#modal')) return;
+    b.addEventListener('click', openModal);
+  });
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalDone').addEventListener('click', closeModal);
+  modal.addEventListener('click', e=>{ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+  document.getElementById('modalSubmit').addEventListener('click', ()=>{
+    const name = document.getElementById('fName');
+    const contact = document.getElementById('fContact');
+    let ok = true;
+    [name, contact].forEach(f=>{
+      if(!f.value.trim()){ f.classList.add('err'); ok = false; }
+      else f.classList.remove('err');
+    });
+    if(!ok) return;
+    /* NOTE: static site — no backend. Connect a form service (e.g. Formspree)
+       or a Telegram bot here to actually receive the request. */
+    modalForm.hidden = true;
+    modalSuccess.hidden = false;
+    name.value = ''; contact.value = ''; document.getElementById('fMsg').value = '';
+  });
+  document.querySelectorAll('#fName,#fContact').forEach(f=>{
+    f.addEventListener('input', ()=>f.classList.remove('err'));
+  });
+
+  applyLang('ru');
+</script>
+</body>
+</html>
